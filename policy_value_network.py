@@ -75,7 +75,7 @@ class policy_value_network(object):
 
         # loss
         with tf.name_scope("loss"):
-            self.policy_loss = tf.nn.softmax_cross_entropy_with_logits(labels=self.pi_, logits=self.policy_head)
+            self.policy_loss = tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.pi_, logits=self.policy_head)
             self.policy_loss = tf.reduce_mean(self.policy_loss)
 
             #             self.value_loss = tf.squared_difference(self.z_, self.value_head)
