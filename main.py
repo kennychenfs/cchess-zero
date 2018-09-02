@@ -1,4 +1,6 @@
 #coding:utf-8
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 from asyncio import Future
 import asyncio
 from asyncio.queues import Queue
@@ -19,7 +21,6 @@ from policy_value_network_gpus import *
 import scipy.stats
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
-
 def flipped_uci_labels(param):
     def repl(x):
         return "".join([(str(9 - int(a)) if a.isdigit() else a) for a in x])

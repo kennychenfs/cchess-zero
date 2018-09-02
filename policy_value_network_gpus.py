@@ -164,7 +164,7 @@ class policy_value_network_gpus(object):
 
         # loss
         with tf.variable_scope("loss"):
-            policy_loss = tf.nn.softmax_cross_entropy_with_logits(labels=pi_batch, logits=policy_head)    #self.pi_
+            policy_loss = tf.nn.softmax_cross_entropy_with_logits_v2(labels=pi_batch, logits=policy_head)    #self.pi_
             policy_loss = tf.reduce_mean(policy_loss)
 
             #             self.value_loss = tf.squared_difference(self.z_, self.value_head)
