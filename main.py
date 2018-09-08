@@ -7,6 +7,7 @@ from asyncio.queues import Queue
 import uvloop
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
+import datetime
 import tensorflow as tf
 import numpy as np
 import os
@@ -1229,7 +1230,7 @@ class cchess_main(object):
             while(True):
                 batch_iter += 1
                 play_data, episode_len = self.selfplay()
-                print("batch i:{}, episode_len:{}".format(batch_iter, episode_len))
+                print("time:{}, batch i:{}, episode_len:{}".format(datetime.datetime.now(), batch_iter, episode_len))
                 extend_data = []
                 # states_data = []
                 for state, mcts_prob, winner in play_data:
