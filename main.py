@@ -1119,12 +1119,13 @@ def softmax(x):
 
 class cchess_main(object):
 
-    def __init__(self, playout=400, in_batch_size=128, exploration = True, in_search_threads = 16, processor = "cpu", num_gpus = 1, res_block_nums = 7, human_color = 'b'):
+    def __init__(self, playout=400, in_batch_size=128, in_end_of_batch=5120, exploration = True, in_search_threads = 16, processor = "cpu", num_gpus = 1, res_block_nums = 7, human_color = 'b'):
         self.epochs = 5
         self.playout_counts = playout    #400    #800    #1600    200
         self.temperature = 1    #1e-8    1e-3
         # self.c = 1e-4
         self.batch_size = in_batch_size    #128    #512
+        self.end_of_batch = in_end_of_batch # 5120
         # self.momentum = 0.9
         self.game_batch = 400    #  Evaluation each 400 times
         # self.game_loop = 25000
@@ -1242,6 +1243,8 @@ class cchess_main(object):
                 self.data_buffer.extend(extend_data)
                 if len(self.data_buffer) > self.batch_size:
                     self.policy_update()
+                if batch_iter > self.end_of_batch:
+                    break
                 # if (batch_iter) % self.game_batch == 0:
                 #     print("current self-play batch: {}".format(batch_iter))
                 #     win_ratio = self.policy_evaluate()
@@ -1562,6 +1565,7 @@ if __name__ == '__main__':
     parser.add_argument('--ai_function', default='mcts', choices=['mcts', 'net'], type=str, help='mcts or net')
     parser.add_argument('--train_playout', default=400, type=int, help='mcts train playout')
     parser.add_argument('--batch_size', default=512, type=int, help='train batch_size')
+    parser.add_argument('--end_of_batch', default=5120, type=int, help='end of train after batch')
     parser.add_argument('--play_playout', default=400, type=int, help='mcts play playout')
     parser.add_argument('--delay', dest='delay', action='store',
                         nargs='?', default=3, type=float, required=False,
@@ -1577,7 +1581,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.mode == 'train':
-        train_main = cchess_main(args.train_playout, args.batch_size, True, args.search_threads, args.processor, args.num_gpus, args.res_block_nums, args.human_color)    # * args.num_gpus
+        train_main = cchess_main(args.train_playout, args.batch_size, args.end_of_batch, True, args.search_threads, args.processor, args.num_gpus, args.res_block_nums, args.human_color)    # * args.num_gpus
         train_main.run()
     elif args.mode == 'play':
         from ChessGame import *
