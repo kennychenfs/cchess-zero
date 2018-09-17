@@ -1243,7 +1243,7 @@ class cchess_main(object):
                 self.data_buffer.extend(extend_data)
                 if len(self.data_buffer) > self.batch_size:
                     self.policy_update()
-                if batch_iter > self.end_of_batch:
+                if batch_iter >= self.end_of_batch:
                     break
                 # if (batch_iter) % self.game_batch == 0:
                 #     print("current self-play batch: {}".format(batch_iter))
