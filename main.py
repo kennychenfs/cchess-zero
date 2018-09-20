@@ -1344,7 +1344,6 @@ class cchess_main(object):
 
         actions_visits = [(act, nod.N) for act, nod in self.mcts.root.child.items()]
         actions, visits = zip(*actions_visits)
-        print("visits={}".format(visits))
         probs = softmax(1.0 / temperature * np.log(visits))    #+ 1e-10
         move_probs = []
         move_probs.append([actions, probs])
