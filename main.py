@@ -1227,6 +1227,7 @@ class cchess_main(object):
     def run(self):
         #self.game_loop
         batch_iter = 0
+        isFirst = 1
         try:
             while(True):
                 batch_iter += 1
@@ -1243,8 +1244,9 @@ class cchess_main(object):
                 self.data_buffer.extend(extend_data)
                 if len(self.data_buffer) > self.batch_size:
                     self.policy_update()
-                if batch_iter >= self.end_of_batch:
-                    os.system("/content/cchess-zero/gpu_models/colab-push-github.sh");
+                if (isFirst == 1 and batch_iter >= self.end_of_batch+10) or (isFirst == 0 and batch_iter >= self.end_of_batch):
+                    isFirst = 0
+                    os.system("/content/cchess-zero/gpu_models/colab-push-github.sh")
                     batch_iter = 0
                 # if (batch_iter) % self.game_batch == 0:
                 #     print("current self-play batch: {}".format(batch_iter))
